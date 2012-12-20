@@ -12,7 +12,7 @@ class WiiRoboticArm < SimpleWiimote
     @ra = RoboticArm.new
   end
 
-  protected
+  private
 
   def on_btn_plus_press(wm)   @ra.led.on        end
   def on_btn_minus_press(wm)  @ra.led.off       end
