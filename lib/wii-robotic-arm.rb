@@ -14,13 +14,20 @@ class WiiRoboticArm < SimpleWiimote
     @terminator = ['home']
   end
 
-  protected
-
-  def on_btn_plus_press(wm)   @ra.led.on        end
-  def on_btn_minus_press(wm)  @ra.led.off       end
+  def on_btn_plus_press(wm)
+    @ra.led.on? ? @ra.led.off : @ra.led.on
+  end
+  
+  def on_btn_minus_press(wm) 
+  end
     
   def on_btn_1_press(wm)
-    @ra.recording.method(@ra.recording? ? :stop : :start).call
+    if @ra.recording? then
+      @ra.recording.stop
+      @played = nil
+    else
+      @ra.recording.start
+    end
   end
   
   def on_btn_2_press(wm)

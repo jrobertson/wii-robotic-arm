@@ -6,18 +6,35 @@ require 'robotic-arm'
 require 'simple_wiimote'
 
 class WiiRoboticArm < SimpleWiimote
-
+  
   def initialize()
     super()
     @ra = RoboticArm.new
+    @played = nil
+    @terminator = ['home']
   end
 
   protected
 
   def on_btn_plus_press(wm)   @ra.led.on        end
   def on_btn_minus_press(wm)  @ra.led.off       end
-  def on_btn_plus_press(wm)   @ra.led.on        end
-  def on_btn_minus_press(wm)  @ra.led.off       end
+    
+  def on_btn_1_press(wm)
+    @ra.recording.method(@ra.recording? ? :stop : :start).call
+  end
+  
+  def on_btn_2_press(wm)
+    if @played != :reverse then
+      puts 'playing in reverse'
+      @ra.recording.reverse_play
+      @played = :reverse
+    else
+      puts 'playing forward'
+      @ra.recording.playback
+      @played = :played
+    end
+  end
+  
   def on_btn_left_down(wm)    @ra.gripper.open  end
   def on_btn_left_up(wm)      @ra.gripper.stop  end
   def on_btn_right_down(wm)   @ra.gripper.close end
